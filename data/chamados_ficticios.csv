@@ -1,0 +1,11 @@
+chamado_id,cliente_id,tema,tipo,canal,timestamp_abertura,status,timestamp_resolucao
+1001,C001,TECNICO,instabilidade_conexao,telefone,2026-09-01T08:00:00,resolvido,2026-09-01T09:00:00
+1002,C002,TECNICO,suporte_tecnico,chat,2026-09-01T09:00:00,aberto,
+1003,C002,TECNICO,suporte_tecnico,telefone,2026-09-01T10:30:00,aberto,
+1004,C003,ADM,fatura,chat,2026-09-01T08:00:00,resolvido,2026-09-01T08:20:00
+1005,C003,ADM,cadastro,telefone,2026-09-01T10:00:00,aberto,
+1006,C004,TECNICO,instabilidade_conexao,chat,2026-09-01T07:00:00,aberto,
+1007,C005,ADM,cancelamento,telefone,2026-09-01T12:00:00,aberto,
+1008,C006,DESCONHECIDO,outros,email,2026-09-01T13:00:00,aberto,
+1009,C001,TECNICO,instabilidade_conexao,telefone,2026-09-02T08:00:00,aberto,
+1010,C004,TECNICO,instabilidade_conexao,chat,2026-09-01T07:40:00,aberto,
