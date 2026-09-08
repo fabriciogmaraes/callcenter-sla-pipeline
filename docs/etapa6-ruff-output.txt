@@ -1,0 +1,439 @@
+UP035 `typing.List` is deprecated, use `list` instead
+  --> ingest/reader.py:11:1
+   |
+ 9 | import csv
+10 | from datetime import datetime
+11 | from typing import List, Optional, TypedDict
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UP045 [*] Use `X | None` for type annotations
+  --> ingest/reader.py:22:26
+   |
+20 |     timestamp_abertura: datetime
+21 |     status: str
+22 |     timestamp_resolucao: Optional[datetime]
+   |                          ^^^^^^^^^^^^^^^^^^
+help: Convert to `X | None`
+   |
+21 |     status: str
+   -     timestamp_resolucao: Optional[datetime]
+22 +     timestamp_resolucao: datetime | None
+23 |
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> ingest/reader.py:25:36
+   |
+25 | def _parse_datetime(value: str) -> Optional[datetime]:
+   |                                    ^^^^^^^^^^^^^^^^^^
+26 |     if not value:
+27 |         return None
+   |
+help: Convert to `X | None`
+   |
+24 |
+   - def _parse_datetime(value: str) -> Optional[datetime]:
+25 + def _parse_datetime(value: str) -> datetime | None:
+26 |     if not value:
+   |
+
+UP006 [*] Use `list` instead of `List` for type annotation
+  --> ingest/reader.py:31:37
+   |
+31 | def read_chamados(csv_path: str) -> List[Chamado]:
+   |                                     ^^^^
+32 |     """Lê o CSV de chamados e retorna uma lista de dicts tipados.
+   |
+help: Replace with `list`
+   |
+30 |
+   - def read_chamados(csv_path: str) -> List[Chamado]:
+31 + def read_chamados(csv_path: str) -> list[Chamado]:
+32 |     """Lê o CSV de chamados e retorna uma lista de dicts tipados.
+   |
+
+UP006 [*] Use `list` instead of `List` for type annotation
+  --> ingest/reader.py:36:15
+   |
+34 |     Não lança erro se um campo opcional (timestamp_resolucao) estiver vazio.
+35 |     """
+36 |     chamados: List[Chamado] = []
+   |               ^^^^
+37 |     with open(csv_path, newline="", encoding="utf-8") as f:
+38 |         reader = csv.DictReader(f)
+   |
+help: Replace with `list`
+   |
+35 |     """
+   -     chamados: List[Chamado] = []
+36 +     chamados: list[Chamado] = []
+37 |     with open(csv_path, newline="", encoding="utf-8") as f:
+   |
+
+DTZ005 `datetime.datetime.now()` called without a `tz` argument
+  --> main.py:22:46
+   |
+21 | def rodar_pipeline(momento_avaliacao: datetime | None = None) -> None:
+22 |     momento_avaliacao = momento_avaliacao or datetime.now()
+   |                                              ^^^^^^^^^^^^^^
+23 |
+24 |     chamados = read_chamados(CSV_PATH)
+   |
+help: Pass a `datetime.timezone` object to the `tz` parameter
+
+UP035 `typing.List` is deprecated, use `list` instead
+  --> rules/dedup.py:16:1
+   |
+15 | from datetime import timedelta
+16 | from typing import List, Optional, TypedDict
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+17 |
+18 | from ingest.reader import Chamado
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> rules/dedup.py:26:21
+   |
+24 |     chamado_id: str
+25 |     tipo_registro: str  # "chamado_novo" | "reabertura"
+26 |     chamado_pai_id: Optional[str]
+   |                     ^^^^^^^^^^^^^
+help: Convert to `X | None`
+   |
+25 |     tipo_registro: str  # "chamado_novo" | "reabertura"
+   -     chamado_pai_id: Optional[str]
+26 +     chamado_pai_id: str | None
+27 |
+   |
+
+UP006 [*] Use `list` instead of `List` for type annotation
+  --> rules/dedup.py:30:43
+   |
+29 | def _chamado_anterior_na_janela(
+30 |     chamado: Chamado, chamados_ordenados: List[Chamado], janela_horas: float
+   |                                           ^^^^
+31 | ) -> Optional[Chamado]:
+32 |     """Retorna o chamado anterior mais recente do mesmo cliente dentro da janela.
+   |
+help: Replace with `list`
+   |
+29 | def _chamado_anterior_na_janela(
+   -     chamado: Chamado, chamados_ordenados: List[Chamado], janela_horas: float
+30 +     chamado: Chamado, chamados_ordenados: list[Chamado], janela_horas: float
+31 | ) -> Optional[Chamado]:
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> rules/dedup.py:31:6
+   |
+29 | def _chamado_anterior_na_janela(
+30 |     chamado: Chamado, chamados_ordenados: List[Chamado], janela_horas: float
+31 | ) -> Optional[Chamado]:
+   |      ^^^^^^^^^^^^^^^^^
+32 |     """Retorna o chamado anterior mais recente do mesmo cliente dentro da janela.
+   |
+help: Convert to `X | None`
+   |
+30 |     chamado: Chamado, chamados_ordenados: List[Chamado], janela_horas: float
+   - ) -> Optional[Chamado]:
+31 + ) -> Chamado | None:
+32 |     """Retorna o chamado anterior mais recente do mesmo cliente dentro da janela.
+   |
+
+UP006 [*] Use `list` instead of `List` for type annotation
+  --> rules/dedup.py:56:15
+   |
+55 | def classificar_reaberturas(
+56 |     chamados: List[Chamado], janela_horas: float = JANELA_REABERTURA_HORAS
+   |               ^^^^
+57 | ) -> List[ChamadoClassificado]:
+58 |     """Classifica cada chamado como chamado_novo ou reabertura (CA1, CA2, CA3)."""
+   |
+help: Replace with `list`
+   |
+55 | def classificar_reaberturas(
+   -     chamados: List[Chamado], janela_horas: float = JANELA_REABERTURA_HORAS
+56 +     chamados: list[Chamado], janela_horas: float = JANELA_REABERTURA_HORAS
+57 | ) -> List[ChamadoClassificado]:
+   |
+
+UP006 [*] Use `list` instead of `List` for type annotation
+  --> rules/dedup.py:57:6
+   |
+55 | def classificar_reaberturas(
+56 |     chamados: List[Chamado], janela_horas: float = JANELA_REABERTURA_HORAS
+57 | ) -> List[ChamadoClassificado]:
+   |      ^^^^
+58 |     """Classifica cada chamado como chamado_novo ou reabertura (CA1, CA2, CA3)."""
+59 |     chamados_ordenados = sorted(chamados, key=lambda c: c["timestamp_abertura"])
+   |
+help: Replace with `list`
+   |
+56 |     chamados: List[Chamado], janela_horas: float = JANELA_REABERTURA_HORAS
+   - ) -> List[ChamadoClassificado]:
+57 + ) -> list[ChamadoClassificado]:
+58 |     """Classifica cada chamado como chamado_novo ou reabertura (CA1, CA2, CA3)."""
+   |
+
+UP006 [*] Use `list` instead of `List` for type annotation
+  --> rules/dedup.py:60:16
+   |
+58 |     """Classifica cada chamado como chamado_novo ou reabertura (CA1, CA2, CA3)."""
+59 |     chamados_ordenados = sorted(chamados, key=lambda c: c["timestamp_abertura"])
+60 |     resultado: List[ChamadoClassificado] = []
+   |                ^^^^
+61 |
+62 |     for chamado in chamados_ordenados:
+   |
+help: Replace with `list`
+   |
+59 |     chamados_ordenados = sorted(chamados, key=lambda c: c["timestamp_abertura"])
+   -     resultado: List[ChamadoClassificado] = []
+60 +     resultado: list[ChamadoClassificado] = []
+61 |
+   |
+
+UP035 `typing.List` is deprecated, use `list` instead
+ --> storage/db.py:6:1
+  |
+5 | import sqlite3
+6 | from typing import List
+  | ^^^^^^^^^^^^^^^^^^^^^^^
+7 |
+8 | from ingest.reader import Chamado
+  |
+
+UP006 [*] Use `list` instead of `List` for type annotation
+  --> storage/db.py:35:15
+   |
+33 | def salvar_chamados(
+34 |     conn: sqlite3.Connection,
+35 |     chamados: List[Chamado],
+   |               ^^^^
+36 |     status_sla_por_id: dict[str, SlaStatus],
+37 |     classificacao_reabertura: List[ChamadoClassificado],
+   |
+help: Replace with `list`
+   |
+34 |     conn: sqlite3.Connection,
+   -     chamados: List[Chamado],
+35 +     chamados: list[Chamado],
+36 |     status_sla_por_id: dict[str, SlaStatus],
+   |
+
+UP006 [*] Use `list` instead of `List` for type annotation
+  --> storage/db.py:37:31
+   |
+35 |     chamados: List[Chamado],
+36 |     status_sla_por_id: dict[str, SlaStatus],
+37 |     classificacao_reabertura: List[ChamadoClassificado],
+   |                               ^^^^
+38 | ) -> None:
+39 |     """Grava (upsert) os chamados já classificados por SLA e por reabertura.
+   |
+help: Replace with `list`
+   |
+36 |     status_sla_por_id: dict[str, SlaStatus],
+   -     classificacao_reabertura: List[ChamadoClassificado],
+37 +     classificacao_reabertura: list[ChamadoClassificado],
+38 | ) -> None:
+   |
+
+DTZ001 `datetime.datetime()` called without a `tzinfo` argument
+  --> tests/test_dedup.py:20:50
+   |
+19 | def test_ca1_chamado_genuinamente_novo():
+20 |     chamados = [_chamado("1", "C001", "TECNICO", datetime(2026, 9, 1, 8, 0))]
+   |                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+21 |     resultado = classificar_reaberturas(chamados)
+22 |     assert resultado[0]["tipo_registro"] == "chamado_novo"
+   |
+help: Pass a `datetime.timezone` object to the `tzinfo` parameter
+
+DTZ001 `datetime.datetime()` called without a `tzinfo` argument
+  --> tests/test_dedup.py:28:42
+   |
+26 | def test_ca2_reabertura_de_chamado_tecnico():
+27 |     chamados = [
+28 |         _chamado("1", "C001", "TECNICO", datetime(2026, 9, 1, 8, 0)),
+   |                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+29 |         _chamado("2", "C001", "TECNICO", datetime(2026, 9, 1, 10, 0)),
+30 |     ]
+   |
+help: Pass a `datetime.timezone` object to the `tzinfo` parameter
+
+DTZ001 `datetime.datetime()` called without a `tzinfo` argument
+  --> tests/test_dedup.py:29:42
+   |
+27 |     chamados = [
+28 |         _chamado("1", "C001", "TECNICO", datetime(2026, 9, 1, 8, 0)),
+29 |         _chamado("2", "C001", "TECNICO", datetime(2026, 9, 1, 10, 0)),
+   |                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+30 |     ]
+31 |     resultado = {c["chamado_id"]: c for c in classificar_reaberturas(chamados)}
+   |
+help: Pass a `datetime.timezone` object to the `tzinfo` parameter
+
+DTZ001 `datetime.datetime()` called without a `tzinfo` argument
+  --> tests/test_dedup.py:39:38
+   |
+37 |     """Caso de borda: repetição na mesma janela, mas tema ADM -> chamado novo."""
+38 |     chamados = [
+39 |         _chamado("1", "C003", "ADM", datetime(2026, 9, 1, 8, 0)),
+   |                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^
+40 |         _chamado("2", "C003", "ADM", datetime(2026, 9, 1, 10, 0)),
+41 |     ]
+   |
+help: Pass a `datetime.timezone` object to the `tzinfo` parameter
+
+DTZ001 `datetime.datetime()` called without a `tzinfo` argument
+  --> tests/test_dedup.py:40:38
+   |
+38 |     chamados = [
+39 |         _chamado("1", "C003", "ADM", datetime(2026, 9, 1, 8, 0)),
+40 |         _chamado("2", "C003", "ADM", datetime(2026, 9, 1, 10, 0)),
+   |                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+41 |     ]
+42 |     resultado = {c["chamado_id"]: c for c in classificar_reaberturas(chamados)}
+   |
+help: Pass a `datetime.timezone` object to the `tzinfo` parameter
+
+DTZ001 `datetime.datetime()` called without a `tzinfo` argument
+  --> tests/test_dedup.py:51:42
+   |
+49 |     exclusivo. Um chamado aberto EXATAMENTE 24h antes não conta como reabertura."""
+50 |     chamados = [
+51 |         _chamado("1", "C001", "TECNICO", datetime(2026, 9, 1, 8, 0)),
+   |                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+52 |         _chamado("2", "C001", "TECNICO", datetime(2026, 9, 2, 8, 0)),  # exatamente 24h depois
+53 |     ]
+   |
+help: Pass a `datetime.timezone` object to the `tzinfo` parameter
+
+DTZ001 `datetime.datetime()` called without a `tzinfo` argument
+  --> tests/test_dedup.py:52:42
+   |
+50 |     chamados = [
+51 |         _chamado("1", "C001", "TECNICO", datetime(2026, 9, 1, 8, 0)),
+52 |         _chamado("2", "C001", "TECNICO", datetime(2026, 9, 2, 8, 0)),  # exatamente 24h depois
+   |                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+53 |     ]
+54 |     resultado = {c["chamado_id"]: c for c in classificar_reaberturas(chamados)}
+   |
+help: Pass a `datetime.timezone` object to the `tzinfo` parameter
+
+DTZ001 `datetime.datetime()` called without a `tzinfo` argument
+  --> tests/test_dedup.py:61:42
+   |
+59 | def test_fora_da_janela_e_chamado_novo():
+60 |     chamados = [
+61 |         _chamado("1", "C001", "TECNICO", datetime(2026, 9, 1, 8, 0)),
+   |                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+62 |         _chamado("2", "C001", "TECNICO", datetime(2026, 9, 3, 8, 0)),  # 48h depois
+63 |     ]
+   |
+help: Pass a `datetime.timezone` object to the `tzinfo` parameter
+
+DTZ001 `datetime.datetime()` called without a `tzinfo` argument
+  --> tests/test_dedup.py:62:42
+   |
+60 |     chamados = [
+61 |         _chamado("1", "C001", "TECNICO", datetime(2026, 9, 1, 8, 0)),
+62 |         _chamado("2", "C001", "TECNICO", datetime(2026, 9, 3, 8, 0)),  # 48h depois
+   |                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+63 |     ]
+64 |     resultado = {c["chamado_id"]: c for c in classificar_reaberturas(chamados)}
+   |
+help: Pass a `datetime.timezone` object to the `tzinfo` parameter
+
+DTZ001 `datetime.datetime()` called without a `tzinfo` argument
+  --> tests/test_sla.py:20:43
+   |
+19 | def test_ca1_dentro_do_prazo():
+20 |     chamado = _chamado("suporte_tecnico", datetime(2026, 9, 1, 8, 0))
+   |                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+21 |     momento = datetime(2026, 9, 1, 9, 0)  # 1h de 4h de SLA
+22 |     assert classificar_sla(chamado, momento) == "dentro_do_prazo"
+   |
+help: Pass a `datetime.timezone` object to the `tzinfo` parameter
+
+DTZ001 `datetime.datetime()` called without a `tzinfo` argument
+  --> tests/test_sla.py:21:15
+   |
+19 | def test_ca1_dentro_do_prazo():
+20 |     chamado = _chamado("suporte_tecnico", datetime(2026, 9, 1, 8, 0))
+21 |     momento = datetime(2026, 9, 1, 9, 0)  # 1h de 4h de SLA
+   |               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+22 |     assert classificar_sla(chamado, momento) == "dentro_do_prazo"
+   |
+help: Pass a `datetime.timezone` object to the `tzinfo` parameter
+
+DTZ001 `datetime.datetime()` called without a `tzinfo` argument
+  --> tests/test_sla.py:26:43
+   |
+25 | def test_ca2_em_risco():
+26 |     chamado = _chamado("suporte_tecnico", datetime(2026, 9, 1, 8, 0))
+   |                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+27 |     momento = datetime(2026, 9, 1, 11, 30)  # 3h30 de 4h de SLA (87.5%)
+28 |     assert classificar_sla(chamado, momento) == "em_risco"
+   |
+help: Pass a `datetime.timezone` object to the `tzinfo` parameter
+
+DTZ001 `datetime.datetime()` called without a `tzinfo` argument
+  --> tests/test_sla.py:27:15
+   |
+25 | def test_ca2_em_risco():
+26 |     chamado = _chamado("suporte_tecnico", datetime(2026, 9, 1, 8, 0))
+27 |     momento = datetime(2026, 9, 1, 11, 30)  # 3h30 de 4h de SLA (87.5%)
+   |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+28 |     assert classificar_sla(chamado, momento) == "em_risco"
+   |
+help: Pass a `datetime.timezone` object to the `tzinfo` parameter
+
+DTZ001 `datetime.datetime()` called without a `tzinfo` argument
+  --> tests/test_sla.py:32:43
+   |
+31 | def test_ca3_estourado():
+32 |     chamado = _chamado("suporte_tecnico", datetime(2026, 9, 1, 8, 0))
+   |                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+33 |     momento = datetime(2026, 9, 1, 13, 0)  # 5h de 4h de SLA
+34 |     assert classificar_sla(chamado, momento) == "estourado"
+   |
+help: Pass a `datetime.timezone` object to the `tzinfo` parameter
+
+DTZ001 `datetime.datetime()` called without a `tzinfo` argument
+  --> tests/test_sla.py:33:15
+   |
+31 | def test_ca3_estourado():
+32 |     chamado = _chamado("suporte_tecnico", datetime(2026, 9, 1, 8, 0))
+33 |     momento = datetime(2026, 9, 1, 13, 0)  # 5h de 4h de SLA
+   |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+34 |     assert classificar_sla(chamado, momento) == "estourado"
+   |
+help: Pass a `datetime.timezone` object to the `tzinfo` parameter
+
+DTZ001 `datetime.datetime()` called without a `tzinfo` argument
+  --> tests/test_sla.py:38:44
+   |
+37 | def test_ca4_tipo_sem_sla_usa_fallback():
+38 |     chamado = _chamado("tipo_inexistente", datetime(2026, 9, 1, 8, 0))
+   |                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+39 |     momento = datetime(2026, 9, 1, 9, 0)  # 1h de 6h de SLA padrão
+40 |     # não deve lançar exceção e deve classificar normalmente
+   |
+help: Pass a `datetime.timezone` object to the `tzinfo` parameter
+
+DTZ001 `datetime.datetime()` called without a `tzinfo` argument
+  --> tests/test_sla.py:39:15
+   |
+37 | def test_ca4_tipo_sem_sla_usa_fallback():
+38 |     chamado = _chamado("tipo_inexistente", datetime(2026, 9, 1, 8, 0))
+39 |     momento = datetime(2026, 9, 1, 9, 0)  # 1h de 6h de SLA padrão
+   |               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+40 |     # não deve lançar exceção e deve classificar normalmente
+41 |     assert classificar_sla(chamado, momento) == "dentro_do_prazo"
+   |
+help: Pass a `datetime.timezone` object to the `tzinfo` parameter
+
+Found 33 errors.
+[*] 12 fixable with the `--fix` option.
