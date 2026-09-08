@@ -1,0 +1,9 @@
+repos:
+  - repo: local
+    hooks:
+      - id: regra-sem-teste
+        name: Bloqueia alteração de regra de negócio sem teste correspondente
+        entry: python3 scripts/check_regra_sem_teste.py
+        language: system
+        pass_filenames: false
+        always_run: true
